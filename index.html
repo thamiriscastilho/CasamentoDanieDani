@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +22,12 @@
             overflow-x: hidden;
         }
 
+        /* Flores mais pequenas */
         .flower-left {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: max(200px, 20vw);
+            width: 120px; /* Tamanho reduzido */
             opacity: 0.95;
             z-index: 1;
             pointer-events: none;
@@ -36,7 +37,7 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: max(200px, 20vw);
+            width: 120px; /* Tamanho reduzido */
             opacity: 0.95;
             z-index: 1;
             pointer-events: none;
@@ -218,6 +219,7 @@
             }
         }
 
+        /* Configuração do item da galeria com botão de eliminar */
         .masonry-item {
             break-inside: avoid;
             margin-bottom: 15px;
@@ -225,11 +227,45 @@
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
             animation: fadeIn 0.6s ease-out forwards;
+            position: relative; /* Necessário para o botão ficar em cima */
         }
 
         .masonry-item img {
             width: 100%;
             display: block;
+        }
+
+        /* Botão para ocultar a foto */
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #a8385d;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none; /* Escondido por padrão */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* Mostra o botão ao passar o rato na imagem */
+        .masonry-item:hover .delete-btn {
+            display: flex;
+        }
+
+        /* Mostra sempre o botão em telemóveis */
+        @media (hover: none) {
+            .delete-btn {
+                display: flex;
+            }
         }
 
         @keyframes fadeIn {
@@ -325,7 +361,6 @@
     <script>
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5rLjAHcTNgL36yWRGV-Gu3GZ8aX-VloC9paF-EAAr_NsUp5rokUnEr3UCVL72VJSY/exec';
 
-        // CARREGA AS FOTOS ASSIM QUE A PÁGINA ABRE
         window.onload = function() {
             fetch(GOOGLE_SCRIPT_URL)
             .then(response => response.json())
@@ -333,7 +368,7 @@
                 document.getElementById('galleryLoading').style.display = 'none';
                 if(data.status === 'sucesso' && data.files) {
                     data.files.forEach(src => {
-                        addToGallery(src, false); // Insere no final
+                        addToGallery(src, false); 
                     });
                 }
             })
@@ -349,7 +384,7 @@
             if (!file) return;
 
             if (file.size > 50 * 1024 * 1024) {
-                showMessage('Arquivo muito grande. Limite de 50MB.', '#a8385d');
+                showMessage('Ficheiro muito grande. Limite de 50MB.', '#a8385d');
                 fileInput.value = "";
                 return;
             }
@@ -366,7 +401,6 @@
                 formData.append('mimeType', file.type);
                 formData.append('fileData', base64Data);
 
-                // Mostra a foto imediatamente no topo (ilusão de tempo real)
                 if(file.type.startsWith('image/')) {
                     addToGallery(e.target.result, true);
                 }
@@ -378,7 +412,7 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('loading').style.display = 'none';
-                    showMessage('Arquivo enviado com sucesso!', '#452b29');
+                    showMessage('Ficheiro enviado com sucesso!', '#452b29');
                     fileInput.value = ""; 
                 })
                 .catch(error => {
@@ -402,9 +436,20 @@
             const gallery = document.getElementById('gallery');
             const item = document.createElement('div');
             item.className = 'masonry-item';
+            
             const img = document.createElement('img');
             img.src = imageSrc;
             item.appendChild(img);
+            
+            // Criação do botão para ocultar a foto do mural
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '✕';
+            deleteBtn.title = 'Ocultar foto';
+            deleteBtn.onclick = function() {
+                item.remove(); // Remove o item apenas do ecrã
+            };
+            item.appendChild(deleteBtn);
             
             if(noTopo) {
                 gallery.insertBefore(item, gallery.firstChild);
