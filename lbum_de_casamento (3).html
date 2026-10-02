@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casamento Danielle & Daniel</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-cream: #f5efe8;
+            --text-dark: #452b29;
+            --accent-pink: #a8385d;
+            --border-light: rgba(168, 56, 93, 0.3);
+            --box-bg: rgba(255, 255, 255, 0.6);
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Flores nos cantos fixadas ao fundo */
+        .floral-img {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.95;
+            width: max(180px, 20vw);
+        }
+
+        .floral-top-right {
+            top: 0;
+            right: 0;
+        }
+
+        .floral-bottom-left {
+            bottom: 0;
+            left: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            box-sizing: border-box;
+            z-index: 10;
+            position: relative;
+        }
+
+        header {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .circle-logo {
+            width: 70px;
+            height: 70px;
+            border: 1px solid var(--accent-pink);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .header-lines {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .header-lines span {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--accent-pink);
+            text-transform: uppercase;
+        }
+
+        .header-lines::before,
+        .header-lines::after {
+            content: "";
+            height: 1px;
+            width: 30px;
+            background-color: var(--accent-pink);
+        }
+
+        .couple-names {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin: 0;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .ampersand {
+            color: var(--accent-pink);
+            font-style: italic;
+            font-size: 2.5rem;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .wedding-date {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--text-dark);
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+
+        .wedding-date::before,
+        .wedding-date::after {
+            content: "";
+            height: 1px;
+            width: 40px;
+            background-color: var(--border-light);
+        }
+
+        .instructions {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin: 35px 0 25px 0;
+            font-style: italic;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        .drop-zone {
+            width: 100%;
+            max-width: 650px;
+            border: 1.5px dashed var(--border-light);
+            border-radius: 12px;
+            padding: 45px 20px;
+            background-color: var(--box-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-color: var(--accent-pink);
+            transform: translateY(-2px);
+        }
+
+        .upload-icon-circle {
+            width: 55px;
+            height: 55px;
+            background-color: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .drop-zone-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin: 0 0 8px 0;
+            font-weight: 400;
+        }
+
+        .drop-zone-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            opacity: 0.6;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .divider {
+            width: 100vw;
+            height: 1px;
+            background-color: var(--accent-pink);
+            opacity: 0.15;
+            margin: 30px calc(-50vw + 50%); 
+            margin-bottom: 40px;
+        }
+
+        .gallery-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 2rem;
+            color: #64748b; /* Tom cinza azulado sutil como solicitado */
+            opacity: 0.8;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .masonry-gallery {
+            column-count: 2;
+            column-gap: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 600px) { .masonry-gallery { column-count: 3; } }
+        @media (min-width: 900px) { .masonry-gallery { column-count: 4; } }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            animation: fadeIn 0.6s ease;
+        }
+
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            width: 100%;
+            padding: 30px 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            opacity: 0.6;
+            letter-spacing: 1px;
+            margin-top: auto;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+
+        /* Responsividade para celulares */
+        @media (max-width: 500px) {
+            .drop-zone { padding: 40px 15px; }
+            .couple-names { font-size: 2.8rem; }
+            .ampersand { font-size: 2rem; }
+            .instructions { font-size: 1.3rem; }
+            .gallery-title { font-size: 1.6rem; }
+            .floral-img { width: 120px; }
+        }
+        
+        #message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-height: 20px;
+            color: var(--accent-pink);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Se a imagem não for encontrada (ex: aqui no preview), ela fica invisível para não quebrar o layout -->
+    <img src="image_688bfc.png" class="floral-img floral-top-right" onerror="this.style.display='none'">
+    <img src="image_688c19.png" class="floral-img floral-bottom-left" onerror="this.style.display='none'">
+
+    <div class="container">
+        <header>
+            <div class="circle-logo">D&D</div>
+            <div class="header-lines">
+                <span>ESTAMOS NOS CASANDO</span>
+            </div>
+            <h1 class="couple-names">Danielle <span class="ampersand">&</span> Daniel</h1>
+            <div class="wedding-date">27 . NOV . 2026</div>
+        </header>
+
+        <p class="instructions">Compartilhe suas fotos e vídeos no nosso álbum compartilhado.</p>
+
+        <div class="drop-zone" id="dropZone">
+            <div class="upload-icon-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <h2 class="drop-zone-title">Toque aqui para enviar arquivos</h2>
+            <p class="drop-zone-sub">ou arraste suas fotos e vídeos</p>
+            <input type="file" id="fileInput" accept="image/*,video/*" multiple />
+        </div>
+
+        <div id="message"></div>
+
+        <div class="divider"></div>
+
+        <h3 class="gallery-title">Momentos Capturados</h3>
+        
+        <div class="masonry-gallery" id="masonryGallery">
+            <!-- As fotos enviadas aparecerão aqui -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        * site desenvolvido por Thamiris Castilho
+    </footer>
+
+    <script>
+        // ATENÇÃO: COLE AQUI A URL QUE VOCÊ GEROU NO GOOGLE APPS SCRIPT
+        const GOOGLE_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APP_DA_WEB';
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const messageDiv = document.getElementById('message');
+
+        // Abrir seletor de arquivo ao clicar
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Eventos visuais de arrastar e soltar
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                handleUpload();
+            }
+        });
+
+        fileInput.addEventListener('change', handleUpload);
+
+        function handleUpload() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            // Limite para evitar travamentos pesados (50MB)
+            if (file.size > 50 * 1024 * 1024) {
+                showMessage('Arquivo muito grande. Escolha um vídeo mais curto ou uma foto.', true);
+                fileInput.value = "";
+                return;
+            }
+
+            showMessage('Enviando seu arquivo, aguarde um momento...', false);
+
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const fullDataUrl = e.target.result;
+                const base64Data = fullDataUrl.split(',')[1]; 
+
+                const formData = new URLSearchParams();
+                formData.append('fileName', file.name);
+                formData.append('mimeType', file.type);
+                formData.append('fileData', base64Data);
+
+                // Disparo para o Google Drive
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showMessage('Memória guardada com sucesso! ✨', false);
+                    
+                    // Adiciona foto à galeria instantaneamente se for imagem
+                    if(file.type.startsWith('image/')) {
+                        addImageToGallery(fullDataUrl);
+                    }
+
+                    setTimeout(() => { messageDiv.innerText = ''; }, 4000); 
+                    fileInput.value = "";
+                })
+                .catch(error => {
+                    console.error("Erro no envio:", error);
+                    showMessage('Erro ao enviar. Verifique sua conexão e tente novamente.', true);
+                });
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function showMessage(text, isError) {
+            messageDiv.innerText = text;
+            messageDiv.style.color = isError ? 'var(--accent-pink)' : 'var(--text-dark)';
+        }
+
+        function addImageToGallery(imageUrl) {
+            const masonryGallery = document.getElementById('masonryGallery');
+            const item = document.createElement('div');
+            item.className = 'masonry-item';
+            
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            
+            item.appendChild(img);
+            masonryGallery.prepend(item); // Adiciona a mais nova no topo
+        }
+    </script>
+</body>
+</html>
